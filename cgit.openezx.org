@@ -1,0 +1,28 @@
+<VirtualHost *:80>
+	ServerName	cgit.openezx.org
+	ServerAlias	cgit.open-ezx.org
+
+	ServerSignature	Off
+
+	Alias /cgit.css /var/www/htdocs/cgit/cgit.css
+	Alias /cgit.png /var/www/htdocs/cgit/cgit.png
+
+	ScriptAlias /cgi-bin/ /var/www/htdocs/cgit/
+
+	DocumentRoot /home/git/repositories
+	<Directory /home/git/repositories>
+		AllowOverride None
+		Options +ExecCGI
+		Order allow,deny
+		Allow from all
+
+		DirectoryIndex /cgi-bin/cgit.cgi
+
+		RewriteEngine on
+		RewriteCond %{REQUEST_FILENAME} !-f
+		RewriteRule ^.*$ /cgi-bin/cgit.cgi/$0 [L,PT]
+	</Directory>
+
+	ErrorLog	/var/log/apache2/cgit.openezx.org/error.log
+	CustomLog	/var/log/apache2/cgit.openezx.org/access.log common
+</VirtualHost>
